@@ -1,5 +1,16 @@
 #include <iostream>
 #include <cstddef>
+#include <limits>
+bool check_sum(size_t a, size_t b)
+{
+  size_t max = std::numeric_limits<size_t>::max();
+  return a>max-b;
+}
+bool check_pow(size_t n)
+{
+  size_t max = std::numeric_limits<size_t>::max();
+  return n>(max/n);
+}
 bool isPyth(size_t a, size_t b, size_t c)
 {
   bool p = (a*a == (b*b+c*c));
@@ -16,6 +27,23 @@ int main()
   size_t count = 0;
   while (std::cin >> a)
   {
+    bool v = check_pow(a);
+    v = v || check_pow(b);
+    v = v || check_pow(c);
+    if (v){
+      std::cout << "out of limits\n";
+      return 2;
+    }
+
+    bool w = check_sum(a*a, b*b);
+    w = w || check_sum(a*a, c*c);
+    w = w || check_sum(c*c, b*b);
+
+    if (w){
+      std::cout << "out of limits\n";
+      return 2;
+    }
+
     count+=isPyth(a,b,c) ? 1:0;
     c = b;
     b = a;
